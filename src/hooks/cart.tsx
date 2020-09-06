@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import { preProcessFile } from 'typescript';
 
 interface Product {
   id: string;
@@ -35,13 +34,13 @@ const CartProvider: React.FC = ({ children }) => {
         '@GoMarktplace:products',
       );
 
-      if (products) {
+      if (storagedProducts) {
         setProducts([...JSON.parse(storagedProducts)]);
       }
     }
 
     loadProducts();
-  }, [products]);
+  }, []);
 
   const addToCart = useCallback(
     async product => {
@@ -93,7 +92,7 @@ const CartProvider: React.FC = ({ children }) => {
 
       setProducts(decrementedProducts);
 
-      await AsyncStorage.removeItem(
+      await AsyncStorage.setItem(
         '@GoMarktplace:products',
         JSON.stringify(decrementedProducts),
       );
